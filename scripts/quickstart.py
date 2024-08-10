@@ -1,6 +1,7 @@
 from pinecone import Pinecone
+import os
 
-pc = Pinecone(api_key="d678b2eb-eff8-4cb4-a899-20a6be0ec0c1")
+pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 index = pc.Index("quickstart")
 
 index.upsert(
