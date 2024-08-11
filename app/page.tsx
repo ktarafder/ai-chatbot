@@ -91,19 +91,28 @@ export default function Home() {
       justifyContent="center"
       alignItems="center"
       bgcolor="#121212" // Dark background for the entire page
+      sx={{
+        backgroundImage: 'url(/BBBackground.png)', // Replace with your image path
+        backgroundSize: 'cover', // Cover the entire page
+        backgroundPosition: 'center', // Center the background image
+        backgroundRepeat: 'no-repeat', // Prevent image from repeating
+      }}
     >
       {/* Main Chat Box */}
       <Box
         width="500px"
         height="750px"
-        bgcolor="linear-gradient(145deg, #1e1e1e, #2a2a2a)" // Gradient background for a techy feel
-        boxShadow="0px 10px 30px rgba(0, 0, 0, 0.5)" // Deep shadow for a floating effect
-        borderRadius={12} // Rounded corners for a sleek look
-        border="2px solid #64b5f6" // Light blue outline
-        overflow="hidden"
-        display="flex"
-        flexDirection="column"
-        position="relative"
+        sx={{
+          background: 'linear-gradient(145deg, #000000, #003366)', // Gradient background for the chatbot
+          boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.5)', // Deep shadow for a floating effect
+          borderRadius: '12px', // Rounded corners for a sleek look
+          border: '2px solid #64b5f6', // Light blue outline
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          backdropFilter: 'blur(10px)', // Optional: adds a blur effect to background content
+        }}
       >
         {/* Header with Logo */}
         <Box
@@ -161,16 +170,17 @@ export default function Home() {
               }
             >
               <Box
-                bgcolor={
-                  message.role === 'assistant'
-                    ? 'rgba(255, 255, 255, 0.1)' // Transparent white for assistant messages
-                    : '#1976d2' // Blue for user messages
-                }
-                color={message.role === 'assistant' ? 'white' : 'white'}
-                borderRadius={12}
-                p={2}
-                maxWidth="75%"
-                boxShadow="0px 2px 12px rgba(0, 0, 0, 0.2)"
+                sx={{
+                  // Added gradient background based on role
+                  backgroundImage: message.role === 'assistant'
+                    ? 'linear-gradient(#08127e,#08127e)' // Gradient for assistant messages (line 154)
+                    : 'linear-gradient(#266df1, #266df1)', // Gradient for user messages (line 155)
+                  color: 'white', // White text color for better readability
+                  borderRadius: '12px', // Rounded corners for a sleek look
+                  p: 2, // Padding inside the message box
+                  maxWidth: '75%', // Limit the message box width
+                  boxShadow: '0px 2px 12px rgba(0, 0, 0, 0.2)', // Subtle shadow for a floating effect
+                }}
               >
                 {message.content}
               </Box>
