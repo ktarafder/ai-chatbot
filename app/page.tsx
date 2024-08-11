@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { Box, Button, Stack, TextField } from '@mui/material'
-import { useState, useRef, useEffect } from 'react'
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -9,26 +9,26 @@ export default function Home() {
       role: 'assistant',
       content: "Hi! I'm the Crescent Cloud Log support assistant. How can I help you today?",
     },
-  ])
-  const [message, setMessage] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef(null)
+  ]);
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    (messagesEndRef.current as HTMLElement | null)?.scrollIntoView({ behavior: "smooth" })
+    (messagesEndRef.current as HTMLElement | null)?.scrollIntoView({ behavior: "smooth" });
   }
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!message.trim()) return;  // Don't send empty messages
     if (isLoading) return; // Prevent multiple simultaneous requests
-  
+
     setIsLoading(true);
     const newMessage = { role: 'user', content: message };
-  
+
     try {
       // Update messages state before sending to backend
       setMessages((prevMessages) => [
@@ -77,8 +77,8 @@ export default function Home() {
 
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault()
-      sendMessage()
+      event.preventDefault();
+      sendMessage();
     }
   }
 
@@ -90,21 +90,67 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      bgcolor="#121212" // Dark background for the entire page
     >
-      <Stack
-        direction={'column'}
+      {/* Main Chat Box */}
+      <Box
         width="500px"
-        height="700px"
-        border="1px solid black"
-        p={2}
-        spacing={3}
+        height="750px"
+        bgcolor="linear-gradient(145deg, #1e1e1e, #2a2a2a)" // Gradient background for a techy feel
+        boxShadow="0px 10px 30px rgba(0, 0, 0, 0.5)" // Deep shadow for a floating effect
+        borderRadius={12} // Rounded corners for a sleek look
+        border="2px solid #64b5f6" // Light blue outline
+        overflow="hidden"
+        display="flex"
+        flexDirection="column"
+        position="relative"
       >
+        {/* Header with Logo */}
+        <Box
+          width="100%"
+          height="70px"
+          bgcolor="linear-gradient(145deg, #0d47a1, #1976d2)" // Gradient for the header
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          position="relative"
+          borderBottom="1px solid #0d47a1" // Subtle border at the bottom
+        >
+          <Typography variant="h6" color="#ffffff" fontWeight="bold">
+            Crescent Cloud Log
+          </Typography>
+          <Box
+            position="absolute"
+            top="20%"
+            left="16px"
+            transform="translateY(-50%)"
+            width="50px"  // Increased width
+            height="50px" // Increased height
+            bgcolor="rgba(255, 255, 255, 0.1)"
+            borderRadius="50%"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            boxShadow="0px 4px 12px rgba(0, 0, 0, 0.3)"
+          >
+            <img src="/crescentcloudlogo.png" alt="Logo" style={{ width: "100px" }} /> {/* Adjusted size */}
+          </Box>
+        </Box>
+
+        {/* Messages Container */}
         <Stack
           direction={'column'}
           spacing={2}
           flexGrow={1}
+          p={2}
           overflow="auto"
-          maxHeight="100%"
+          sx={{
+            '&::-webkit-scrollbar': { width: '0.4em' },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#1976d2',
+              borderRadius: '10px',
+            },
+          }} // Styled scrollbar
         >
           {messages.map((message, index) => (
             <Box
@@ -117,12 +163,14 @@ export default function Home() {
               <Box
                 bgcolor={
                   message.role === 'assistant'
-                    ? 'primary.main'
-                    : 'secondary.main'
+                    ? 'rgba(255, 255, 255, 0.1)' // Transparent white for assistant messages
+                    : '#1976d2' // Blue for user messages
                 }
-                color="white"
-                borderRadius={16}
-                p={3}
+                color={message.role === 'assistant' ? 'white' : 'white'}
+                borderRadius={12}
+                p={2}
+                maxWidth="75%"
+                boxShadow="0px 2px 12px rgba(0, 0, 0, 0.2)"
               >
                 {message.content}
               </Box>
@@ -130,20 +178,62 @@ export default function Home() {
           ))}
           <div ref={messagesEndRef} />
         </Stack>
-        <Stack direction={'row'} spacing={2}>
+
+        {/* Input Area */}
+        <Box
+          display="flex"
+          alignItems="center"
+          p={2}
+          bgcolor="#1e1e1e"
+          borderTop="1px solid #0d47a1"
+        >
           <TextField
-            label="Message"
+            placeholder="Type your message..."
             fullWidth
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             disabled={isLoading}
+            variant="outlined"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '20px',
+                bgcolor: '#2a2a2a',
+                color: 'white',
+              },
+              '& .MuiInputBase-input': {
+                padding: '10px 12px',
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#2196f3',
+              },
+              '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#64b5f6',
+              },
+            }}
           />
-          <Button variant="contained" onClick={sendMessage} disabled={isLoading}>
+          <Button
+            variant="contained"
+            onClick={sendMessage}
+            disabled={isLoading}
+            sx={{
+              marginLeft: '8px',
+              borderRadius: '20px',
+              height: '40px',
+              minWidth: '40px',
+              bgcolor: '#0d47a1',
+              '&:hover': {
+                bgcolor: '#1565c0',
+              },
+            }}
+          >
             Send
           </Button>
-        </Stack>
-      </Stack>
+        </Box>
+      </Box>
     </Box>
   )
 }
