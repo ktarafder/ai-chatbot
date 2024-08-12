@@ -132,7 +132,6 @@ export default function Home() {
             position="absolute"
             top="20%"
             left="16px"
-            transform="translateY(-50%)"
             width="50px"  // Increased width
             height="50px" // Increased height
             bgcolor="rgba(255, 255, 255, 0.1)"
